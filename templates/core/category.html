@@ -1,0 +1,459 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo" /></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…" />
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu font-heading">
+                            <li class="menu-item-has-children">
+                                <a href="index.html">Home</a>
+                                <ul class="dropdown">
+                                    <li><a href="index.html">Home 1</a></li>
+                                    <li><a href="index-2.html">Home 2</a></li>
+                                    <li><a href="index-3.html">Home 3</a></li>
+                                    <li><a href="index-4.html">Home 4</a></li>
+                                    <li><a href="index-5.html">Home 5</a></li>
+                                    <li><a href="index-6.html">Home 6</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="shop-grid-right.html">shop</a>
+                                <ul class="dropdown">
+                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                            <li><a href="shop-product-vendor.html">Product – Vendor Infor</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Shop Invoice</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-invoice-1.html">Shop Invoice 1</a></li>
+                                            <li><a href="shop-invoice-2.html">Shop Invoice 2</a></li>
+                                            <li><a href="shop-invoice-3.html">Shop Invoice 3</a></li>
+                                            <li><a href="shop-invoice-4.html">Shop Invoice 4</a></li>
+                                            <li><a href="shop-invoice-5.html">Shop Invoice 5</a></li>
+                                            <li><a href="shop-invoice-6.html">Shop Invoice 6</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Vendors</a>
+                                <ul class="dropdown">
+                                    <li><a href="vendors-grid.html">Vendors Grid</a></li>
+                                    <li><a href="vendors-list.html">Vendors List</a></li>
+                                    <li><a href="vendor-details-1.html">Vendor Details 01</a></li>
+                                    <li><a href="vendor-details-2.html">Vendor Details 02</a></li>
+                                    <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
+                                    <li><a href="vendor-guide.html">Vendor Guide</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Mega menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Dresses</a></li>
+                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Jackets</a></li>
+                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Tablets</a></li>
+                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="blog-category-fullwidth.html">Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="page-about.html">About Us</a></li>
+                                    <li><a href="page-contact.html">Contact</a></li>
+                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="page-login.html">Login</a></li>
+                                    <li><a href="page-register.html">Register</a></li>
+                                    <li><a href="page-forgot-password.html">Forgot password</a></li>
+                                    <li><a href="page-reset-password.html">Reset password</a></li>
+                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="page-terms.html">Terms of Service</a></li>
+                                    <li><a href="page-404.html">404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap">
+                    <div class="single-mobile-header-info">
+                        <a href="page-contact.html"><i class="fi-rs-marker"></i> Our location </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon mb-50">
+                    <h6 class="mb-15">Follow Us</h6>
+                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook-white.svg" alt="" /></a>
+                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter-white.svg" alt="" /></a>
+                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram-white.svg" alt="" /></a>
+                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest-white.svg" alt="" /></a>
+                    <a href="#"><img src="assets/imgs/theme/icons/icon-youtube-white.svg" alt="" /></a>
+                </div>
+                <div class="site-copyright">Copyright 2022 © Nest. All rights reserved. Powered by AliThemes.</div>
+            </div>
+        </div>
+    </div>
+    <!--End header-->
+    <main class="main">
+        <div class="page-header mt-30 mb-75">
+            <div class="container">
+                <div class="archive-header">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3">
+                            <h1 class="mb-15">Categories</h1>
+                            <div class="breadcrumb">
+                                <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                                <span></span> Categories
+                            </div>
+                        </div>
+                        {% comment %} <div class="col-xl-9 text-end d-none d-xl-block">
+                            <ul class="tags-list">
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Shopping</a>
+                                </li>
+                                <li class="hover-up active">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Recips</a>
+                                </li>
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Kitchen</a>
+                                </li>
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>News</a>
+                                </li>
+                                <li class="hover-up mr-0">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Food</a>
+                                </li>
+                            </ul>
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="shop-product-fillter mb-50 pr-30">
+                            <div class="totall-product">
+                                <h2>
+                                    <img class="w-36px mr-10" src="assets/imgs/theme/icons/category-1.svg" alt="" />
+                                    {{categories.count}} Categories
+                                </h2>
+                            </div>
+                            {% comment %} <div class="sort-by-product-area">
+                                <div class="sort-by-cover mr-10">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps"></i>Show:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">50</a></li>
+                                            <li><a href="#">100</a></li>
+                                            <li><a href="#">150</a></li>
+                                            <li><a href="#">200</a></li>
+                                            <li><a href="#">All</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sort-by-cover">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps-sort"></i>Sort:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span>Featured <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">Featured</a></li>
+                                            <li><a href="#">Newest</a></li>
+                                            <li><a href="#">Most comments</a></li>
+                                            <li><a href="#">Release Date</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                        <div class="loop-grid pr-30">
+                            <div class="row">
+                                {% for c in categories %}
+                                <article class="col-xl-4 col-lg-6 col-md-6 text-center hover-up mb-30 animated">
+                                    <div class="post-thumb">
+                                        <a href="{% url 'core:category-product-list' c.cid %}">
+                                            <img class="border-radius-15" src="{{c.image.url}}" alt="" />
+                                        </a>
+                                        <div class="entry-meta">
+                                            <a class="entry-meta meta-2" href="blog-category-grid.html"><i class="fi-rs-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="entry-content-2">
+                                        {% comment %} <h6 class="mb-10 font-sm"><a class="entry-meta text-muted" href="blog-category-grid.html">Side Dish</a></h6> {% endcomment %}
+                                        <h4 class="post-title mb-15">
+                                            <a href="{% url 'core:category-product-list' c.cid %}">{{c.title}}</a>
+                                        </h4>
+                                        <div class="entry-meta font-xs color-grey mt-10 pb-10">
+                                            <div>
+                                                {% comment %} <span class="post-on mr-10">25 April 2022</span>
+                                                <span class="hit-count has-dot mr-10">126k Views</span> {% endcomment %}
+                                                <span class="hit-count">{{c.category.count }} product{{c.category.count|pluralize }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>  
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% comment %} <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-start">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                        <div class="widget-area">
+                            <div class="sidebar-widget-2 widget_search mb-50">
+                                <div class="search-form">
+                                    <form action="#">
+                                        <input type="text" placeholder="Search…" />
+                                        <button type="submit"><i class="fi-rs-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="sidebar-widget widget-category-2 mb-50">
+                                <h5 class="section-title style-1 mb-30">Category</h5>
+                                <ul>
+                                    {% for c in categories %}
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img src="{{c.image.url}}" alt="" />{{c.title}}</a><span class="count">{{c.category.count }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <!-- Product sidebar Widget -->
+                            <div class="sidebar-widget product-sidebar mb-50 p-30 bg-grey border-radius-10">
+                                <h5 class="section-title style-1 mb-30">Trending Now</h5>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-3.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
+                                        <p class="price mb-0 mt-5">$99.50</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 90%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-4.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
+                                        <p class="price mb-0 mt-5">$89.50</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-5.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
+                                        <p class="price mb-0 mt-5">$25</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-6.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Lorem, ipsum</a></h6>
+                                        <p class="price mb-0 mt-5">$25</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar-widget widget_instagram mb-50">
+                                <h5 class="section-title style-1 mb-30">Gallery</h5>
+                                <div class="instagram-gellay">
+                                    <ul class="insta-feed">
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-1.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-2.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-3.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-4.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-5.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5" src="assets/imgs/shop/thumbnail-6.jpg" alt="" /></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Tags-->
+                            <div class="sidebar-widget widget-tags mb-50 pb-10">
+                                <h5 class="section-title style-1 mb-30">Popular Tags</h5>
+                                <ul class="tags-list">
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Cabbage</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Broccoli</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Smoothie</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Fruit</a>
+                                    </li>
+                                    <li class="hover-up mr-0">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Salad</a>
+                                    </li>
+                                    <li class="hover-up mr-0">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Appetizer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="banner-img wow fadeIn mb-50 animated d-lg-block d-none">
+                                <img src="assets/imgs/banner/banner-11.png" alt="" />
+                                <div class="banner-text">
+                                    <span>Oganic</span>
+                                    <h4>
+                                        Save 17% <br />
+                                        on <span class="text-brand">Oganic</span><br />
+                                        Juice
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% endblock content %}
