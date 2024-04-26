@@ -1,10 +1,16 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from core.models import Product, Vendor, Category, ProductImages, CartOrder, CartOrderItems, ProductReview, Wishlist, Address
 from taggit.models import Tag
 from django.db.models import Avg
 from core.forms import ProductReviewForm
 from django.template.loader import render_to_string
+from django.contrib import messages
+from django.urls import reverse
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -163,7 +169,13 @@ def filter_product(request):
     categories = request.GET.getlist('category[]')
     vendors = request.GET.getlist('vendor[]')
 
+    min_price = request.GET['min_price']
+    max_price = request.GET['max_price']
+
     products = Product.objects.filter(product_status='published').order_by('-date').distinct()
+    
+    products = products.filter(price__gte=min_price)
+    products = products.filter(price__lte=max_price)
 
     if len(categories) > 0:
         products = products.filter(category__id__in=categories).distinct()
@@ -180,4 +192,148 @@ def filter_product(request):
     return JsonResponse({'data': data})
 
 
+def add_to_cart(request):
+    cart_products = {}
+    cart_products[str(request.GET["id"])] = {
+        'title': request.GET["title"],
+        'price': request.GET["price"],
+        'qty': request.GET["qty"],
+        'image': request.GET['image'],
+        'pid': request.GET['pid'],
+    }
 
+    if 'cart_data_obj' in request.session:
+        if str(request.GET['id']) in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            cart_data[str(request.GET['id'])]['qty'] = int(cart_products[str(request.GET['id'])]['qty'])
+            cart_data.update(cart_data)
+            request.session['cart_data_obj'] = cart_data
+        else:
+            cart_data = request.session['cart_data_obj']
+            cart_data.update(cart_products)
+            request.session['cart_data_obj'] = cart_data
+    else:
+        request.session['cart_data_obj'] = cart_products
+
+    return JsonResponse({'data': request.session['cart_data_obj'], 'totalcartitems':
+    len(request.session['cart_data_obj'])})
+
+
+def cart_view(request):
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+            return render(request, "core/cart.html", {'cart_data': request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
+    else:
+        messages.warning(request, 'Your cart is empty')
+        return redirect('core:index')
+
+
+def delete_from_cart_view(request):
+    product_id = str(request.GET['id'])
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            del request.session['cart_data_obj'][product_id]
+            request.session['cart_data_obj'] = cart_data
+
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+    context = render_to_string("core/asnyc/cart-list.html", {'cart_data': request.session['cart_data_obj'], 'totalcartitems':
+    len(request.session['cart_data_obj']), 'cart_total_amount': cart_total_amount})
+
+    return JsonResponse({'data': context, 'totalcartitems': len(request.session['cart_data_obj'])})
+
+
+def update_from_cart(request):
+    product_id = str(request.GET['id'])
+    product_qty = request.GET['qty']
+
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            cart_data[str(request.GET['id'])]['qty'] = product_qty
+            request.session['cart_data_obj'] = cart_data
+
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+    context = render_to_string("core/asnyc/cart-list.html", {'cart_data': request.session['cart_data_obj'], 'totalcartitems':
+    len(request.session['cart_data_obj']), 'cart_total_amount': cart_total_amount})
+
+    return JsonResponse({'data': context, 'totalcartitems': len(request.session['cart_data_obj'])})
+
+
+@login_required
+def checkout_view(request):
+
+    cart_total_amount = 0
+    total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            total_amount += int(item['qty']) * float(item['price'])
+        
+        order = CartOrder.objects.create(
+            user=request.user,
+            price=total_amount,
+        )
+
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+            ############ Create Order Items ################
+            items = CartOrderItems.objects.create(
+                order=order,
+                invoice_no='INV-'+str(order.id),
+                item=item['title'],
+                image=item['image'],
+                qty=item['qty'],
+                price=item['price'],
+                total=float(item['qty']) * float(item['price'])
+            )
+
+        
+
+
+
+
+    host = request.get_host()
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': cart_total_amount,
+        'item_name': "order-item-number-" + str(order.id),
+        'invoice': 'invoice-number-' + str(order.id),
+        'currency_code': 'USD',
+        'notify_url': 'http://{}{}'.format(host, reverse('core:paypal-ipn')),
+        'return_url': 'http://{}{}'.format(host, reverse('core:payment-completed')),
+        'cancel_url': 'http://{}{}'.format(host, reverse('core:payment-failed')),
+    }
+
+    paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
+
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+    return render(request, 'core/checkout.html', {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount, 'paypal_payment_button': paypal_payment_button},)
+
+
+csrf_exempt
+@login_required
+def payment_completed_view(request):
+        cart_total_amount = 0
+        if 'cart_data_obj' in request.session:
+            for p_id, item in request.session['cart_data_obj'].items():
+                cart_total_amount += int(item['qty']) * float(item['price'])
+        return render(request, 'core/payment-completed.html', {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+
+
+@csrf_exempt
+@login_required
+def payment_failed_view(request):
+    return render(request, 'core/payment-failed.html')

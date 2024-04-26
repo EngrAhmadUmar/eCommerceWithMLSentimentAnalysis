@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     #third party packages
     'taggit',
     'ckeditor',
+    'paypal.standard.ipn',
 
     #Custom Apps
     'core',
@@ -163,3 +164,9 @@ CKEDITOR_CONFIGS = {
         )
     }
 }
+
+LOGIN_URL = 'userauths:sign-in'
+
+
+PAYPAL_RECEIVER_EMAIL = 'sb-c5xgx6555500@business.example.com'
+PAYPAL_TEST = True
