@@ -320,7 +320,13 @@ def checkout_view(request):
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
-    return render(request, 'core/checkout.html', {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount, 'paypal_payment_button': paypal_payment_button},)
+
+    try:
+        active_address = Address.objects.get(user=request.user, status=True)
+    except:
+        messages.warning(request, "There are multiple address, only one should be activated.")
+        active_address = None
+    return render(request, 'core/checkout.html', {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount, 'paypal_payment_button': paypal_payment_button, 'active_address': active_address})
 
 
 csrf_exempt
@@ -337,3 +343,47 @@ def payment_completed_view(request):
 @login_required
 def payment_failed_view(request):
     return render(request, 'core/payment-failed.html')
+
+
+login_required
+def customer_dashboard(request):
+    address = Address.objects.filter(user=request.user)
+    orders = CartOrder.objects.filter(user=request.user).order_by('id')
+
+    if request.method == "POST":
+        address = request.POST['address']
+        mobile = request.POST['mobile']
+
+        new_address = Address.objects.create(
+            user=request.user,
+            address=address,
+            mobile=mobile,
+        )
+
+        messages.success(request, 'Address updated successfully')
+        return redirect('core:dashboard')
+
+    context = {
+        'orders': orders,
+        'address': address,
+    }
+    return render(request, 'core/dashboard.html', context)
+
+
+
+def order_detail(request, id):
+    order = CartOrder.objects.get(user=request.user, id=id)
+    order_items = CartOrderItems.objects.filter(order=order)
+
+    context = {
+        'order_items': order_items,
+    }
+
+    return render(request, 'core/order-detail.html', context)
+
+
+def make_address_default(request):
+    id = request.GET['id']
+    Address.objects.update(status=False)
+    Address.objects.filter(id=id).update(status=True)
+    return JsonResponse({'boolean': True})

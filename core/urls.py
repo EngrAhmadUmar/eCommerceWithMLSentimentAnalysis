@@ -1,5 +1,5 @@
 from django.urls import path, include
-from core.views import index, product_list_view, checkout_view, category_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_from_cart_view, update_from_cart, payment_completed_view, payment_failed_view
+from core.views import index, product_list_view, checkout_view, customer_dashboard, category_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_from_cart_view, update_from_cart, payment_completed_view, payment_failed_view, order_detail, make_address_default
 
 app_name = 'core'
 
@@ -54,5 +54,15 @@ urlpatterns = [
     #payment successfull and failed screens
     path("payment-completed/", payment_completed_view, name="payment-completed"),
     path("payment-failed/", payment_failed_view, name="payment-failed"),
+
+
+    #Dashboard URL
+    path('dashboard/', customer_dashboard, name="dashboard"),
+
+    #Order_Details URL
+    path('dashboard/order/<int:id>', order_detail, name="order-detail"),
+
+    #Make address default
+    path('make-default-address', make_address_default, name="make-default-address"),
 
 ]
