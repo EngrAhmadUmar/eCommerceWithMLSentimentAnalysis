@@ -136,14 +136,14 @@ $(".add-to-cart-btn").on("click", function(){
     let product_pid = $(".product-pid-" +index).val()
     let product_image = $('.product-image-' +index).val()
  
-    console.log("quantity", quantity);
-    console.log("product title", product_title);
-    console.log("product_id", product_id);
-    console.log("product price", product_price);
-    console.log("this val", this_val);
-    console.log("product pid", product_pid);
-    console.log("image ", product_image);
-    console.log("index", index);
+    // console.log("quantity", quantity);
+    // console.log("product title", product_title);
+    // console.log("product_id", product_id);
+    // console.log("product price", product_price);
+    // console.log("this val", this_val);
+    // console.log("product pid", product_pid);
+    // console.log("image ", product_image);
+    // console.log("index", index);
 
     $.ajax({
         url: '/add-to-cart',
@@ -167,7 +167,6 @@ $(".add-to-cart-btn").on("click", function(){
         }
     })
 })
-
 
 // Delete Product from cart
 $(document).on("click", '.delete-product', function(){
@@ -246,37 +245,87 @@ $(document).on('click', '.make-default-address', function(){
 })
 
 
-// $("#add-to-cart-btn").on("click", function(){
-//     let quantity = $("#product-quantity").val()
-//     let product_title = $(".product-title").val()
-//     let product_id = $(".product-id").val()
-//     let product_price = $("#current-product-price").text()
-//     let this_val = $(this)
+//Adding to wishlist
 
-//     console.log(quantity);
-//     console.log(product_title);
-//     console.log(product_id);
-//     console.log(product_price);
-//     console.log(this_val);
+$(document).on('click', '.add-to-wishlist', function(){
+    let product_id = $(this).attr('data-product-item')
+    let this_val = $(this)
 
-//     $.ajax({
-//         url: '/add-to-cart',
-//         data: {
-//             'id': product_id,
-//             'qty': quantity,
-//             'title': product_title,
-//             'price': product_price
-//         },
-//         dataType: 'json',
-//         beforeSend: function(){
-//             console.log("adding product");
-//         },
-//         success: function(res){
-//             this_val.html('Item added to cart');
-//             console.log("added product");
+    // console.log(product_id);
+    // console.log(this_val);
 
-//             $(".cart-items-count").text(response.totalcartitems)
-//         }
-//     })
-// })
+    $.ajax({
+       url: '/add-to-wishlist',
+       data: {
+        'product_id': product_id
+       },
+       dataType: 'json',
+       beforeSend: function(){
+            console.log("adding to wishlist");
+       },
+       success: function(response){
+            this_val.html("✔");
+            if (response.bool == true){
+                console.log("added to wishlist");
+            }
+       }
+    })
+})
 
+
+// Remove from wishlist
+$(document).on('click', '.delete-wishlist-product', function(){
+    let wishlist_id = $(this).attr('data-wishlist-product')
+    let this_val = $(this)
+
+    $.ajax({
+        url: '/remove-from-wishlist',
+        data: {
+            'id': wishlist_id,
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            console.log('deleting product from wishlist');
+        },
+        success: function(response){
+            console.log('deleted product from wishlist');
+            $('#wishlist-list').html(response.data);
+        }
+    })
+})
+
+ // Contact form
+ $(document).on('submit', '#contact-form-ajax', function(e){
+    e.preventDefault()
+    let full_name = $('#full_name').val()
+    let email = $('#email').val()
+    let phone = $('#phone').val()
+    let subject = $('#subject').val()
+    let message = $('#message').val()
+    
+    // console.log(full_name);
+    // console.log(email);
+    // console.log(phone);
+    // console.log(subject);
+    // console.log(message);
+    $.ajax({
+        url: '/ajax-contact-form',
+        data:{
+            'full_name': full_name,
+            'phone': phone,
+            'email': email,
+            'subject': subject,
+            'message': message,
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            console.log("sending from contact form");
+        },
+        success: function(res){
+            console.log('sent contact form');
+            $('#contact-form-ajax').hide();
+            $('#message-response').html("Message Sent Successfully!");
+        }
+    })
+
+ })

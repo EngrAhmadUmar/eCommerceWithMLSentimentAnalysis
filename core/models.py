@@ -88,8 +88,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="category")
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, related_name='vendor')
 
-    price = models.DecimalField(max_digits=999999999999, decimal_places=2, default="89.99")
-    oldprice = models.DecimalField(max_digits=999999999999, decimal_places=2, default="95.99")
+    price = models.DecimalField(max_digits=12, decimal_places=2, default="89.99")
+    oldprice = models.DecimalField(max_digits=12, decimal_places=2, default="95.99")
     
     specifications = RichTextUploadingField(null=True, blank=True)
     type = models.CharField(max_length=100, default="Hacks", null=True, blank=True)
@@ -143,10 +143,30 @@ class ProductImages(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=999999999999, decimal_places=2, default="89.99")
+    full_name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
+    phone = models.CharField(max_length=100, null=True, blank=True)
+
+
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    
+
+    price = models.DecimalField(max_digits=12, decimal_places=2, default="0.00")
+    saved = models.DecimalField(max_digits=12, decimal_places=2, default="0.00")
+    shipping_method = models.CharField(max_length=100, null=True, blank=True)
+    tracking_id = models.CharField(max_length=100, null=True, blank=True)
+    tracking_website_address = models.CharField(max_length=100, null=True, blank=True)
+
     paid_status = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default="processing")
+    sku = ShortUUIDField(null=True, blank=True, length=5, prefix='SKU', max_length=20, alphabet='1234567890')
+    oid = ShortUUIDField(null=True, blank=True, length=5, max_length=20, alphabet='1234567890')
+
+    stripe_payment_intent = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Cart Order"
@@ -158,8 +178,8 @@ class CartOrderItems(models.Model):
     item = models.CharField(max_length=200)
     image = models.CharField(max_length=200)
     qty = models.IntegerField(default=0)
-    price = models.DecimalField(max_digits=999999999999, decimal_places=2, default="89.99")
-    total = models.DecimalField(max_digits=999999999999, decimal_places=2, default="0")
+    price = models.DecimalField(max_digits=12, decimal_places=2, default="89.99")
+    total = models.DecimalField(max_digits=12, decimal_places=2, default="0")
 
     class Meta:
         verbose_name_plural = "Cart Order Items"
@@ -212,3 +232,14 @@ class Address(models.Model):
 
     class Meta:
         verbose_name_plural = "Addresses"
+
+
+class Profile(models.Model):
+    full_name = models.CharField(max_length=200)
+    bio = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(upload_to='image')
+    phone = models.CharField(max_length=200)
+    verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.full_name
