@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
-from core.models import Product, Vendor, Category, ProductImages, CartOrder, CartOrderItems, ProductReview, Wishlist, Address
+from core.models import Product, Vendor, Coupon, Category, ProductImages, CartOrder, CartOrderItems, ProductReview, Wishlist, Address
 from taggit.models import Tag
 from django.db.models import Avg
 from core.forms import ProductReviewForm
@@ -16,6 +16,7 @@ import calendar
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 from userauths.models import ContactUs, Profile
+import stripe
 
 def index(request):
     # product = Product.objects.all().order_by('-id')
@@ -344,23 +345,80 @@ def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderItems.objects.filter(order=order)
 
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        coupon = Coupon.objects.filter(code=code, active=True).first()
+
+        if coupon:
+            if coupon in order.coupon.all():
+                messages.warning(request, "Coupon used already")
+                return redirect('core:checkout', order.oid)
+            else:
+                discount = order.price * coupon.discount / 100
+                order.coupon.add(coupon)
+                order.price -= discount
+                order.saved += discount
+                order.save()
+                
+                messages.success(request, 'Coupon Activated, Proceed with Checkout')
+                return redirect('core:checkout', order.oid)
+        else:
+            messages.warning(request, 'Incorrect Coupon Code, try again lad')
+            return redirect('core:checkout', order.oid)
+
+
     context = {
         'order': order,
         'order_items': order_items,
+        'stripe_publishable_key': settings.STRIPE_PUBLIC_KEY,
     }
 
     return render(request, 'core/checkout.html', context)
     
+@csrf_exempt
+def create_checkout_session(request, oid):
+    order = CartOrder.objects.get(oid=oid)
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    
+    checkout_session = stripe.checkout.Session.create(
+        customer_email = order.email,
+        payment_method_types = ['card'],
+        line_items = [
+            {
+                'price_data':{
+                    'currency': 'USD',
+                    'product_data': {
+                        'name': order.full_name,
+                    },
+                    'unit_amount': int(order.price * 1000)
+                },
+                'quantity':1
+            }
+        ],
+        mode = 'payment',
+        success_url = request.build_absolute_uri(reverse('core:payment-completed', args=[order.oid])) + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url = request.build_absolute_uri(reverse('core:payment-failed'))
+    )
 
+    order.paid_status = False
+    order.stripe_payment_intent = checkout_session['id']
+    order.save()
+
+    return JsonResponse({'sessionId': checkout_session.id})
 
 csrf_exempt
 @login_required
-def payment_completed_view(request):
-    cart_total_amount = 0
-    if 'cart_data_obj' in request.session:
-        for p_id, item in request.session['cart_data_obj'].items():
-            cart_total_amount += int(item['qty']) * float(item['price'])
-    return render(request, 'core/payment-completed.html', {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+def payment_completed_view(request, oid):
+    order = CartOrder.objects.get(oid=oid)
+    if order.paid_status == False:
+        order.paid_status = True
+        order.save()
+
+
+    context = {
+        'order': order,
+    }
+    return render(request, 'core/payment-completed.html', context)
 
 
 @csrf_exempt

@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from environs import Env
+
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +31,7 @@ SECRET_KEY = 'django-insecure-1ufecn3f9br63x2f!z*4odnlw=3z-$ipekn9^0j58vax8o1n5e
 DEBUG = True
 
 ALLOWED_HOSTS = []
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 # Application definition
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     #third party packages
     'taggit',
@@ -47,7 +53,8 @@ INSTALLED_APPS = [
 
     #Custom Apps
     'core',
-    'userauths'
+    'userauths',
+    'useradmin'
 
 ]
 
@@ -170,3 +177,6 @@ LOGIN_URL = 'userauths:sign-in'
 
 PAYPAL_RECEIVER_EMAIL = 'sb-c5xgx6555500@business.example.com'
 PAYPAL_TEST = True
+
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")

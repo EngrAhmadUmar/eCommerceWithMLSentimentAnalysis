@@ -1,5 +1,5 @@
 from django.urls import path, include
-from core.views import index, product_list_view, WishlistPage, save_checkout_info, add_to_wishlist, checkout, customer_dashboard, category_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_from_cart_view, update_from_cart, payment_completed_view, payment_failed_view, order_detail, make_address_default, remove_wishlist, contact, ajax_contact
+from core.views import index, product_list_view, create_checkout_session, WishlistPage, save_checkout_info, add_to_wishlist, checkout, customer_dashboard, category_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_from_cart_view, update_from_cart, payment_completed_view, payment_failed_view, order_detail, make_address_default, remove_wishlist, contact, ajax_contact
 
 app_name = 'core'
 
@@ -52,7 +52,7 @@ urlpatterns = [
 
 
     #payment successfull and failed screens
-    path("payment-completed/", payment_completed_view, name="payment-completed"),
+    path("payment-completed/<oid>/", payment_completed_view, name="payment-completed"),
     path("payment-failed/", payment_failed_view, name="payment-failed"),
 
 
@@ -79,5 +79,6 @@ urlpatterns = [
     path('ajax-contact-form/', ajax_contact, name='ajax-contact-form'),
 
     #New Routes
-    path('save_checkout_info', save_checkout_info, name='save_checkout_info')
+    path('save_checkout_info', save_checkout_info, name='save_checkout_info'),
+    path('api/create_checkout_session/<oid>/', create_checkout_session, name='create_checkout_session')
 ]
